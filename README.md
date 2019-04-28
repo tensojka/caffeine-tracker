@@ -1,4 +1,8 @@
-# caffeine-tracker
+# Caffeine tracker
+
+A toy Progressive Web App to track your caffeine intake. Based off vue-cli. Uses localStorage for saving the caffeine intake.
+
+Check it out live: https://tensojka.github.io/caffeine-tracker/
 
 ## Project setup
 ```
@@ -14,16 +18,3 @@ npm run serve
 ```
 npm run build
 ```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
