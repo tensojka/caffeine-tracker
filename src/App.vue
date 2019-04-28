@@ -1,6 +1,7 @@
 <template>
-  <div id="app" class="container">
-    <h1 class="title">Caffeine tracker</h1>
+<section class="section">
+  <div class="container content">
+    <h1 class="title is-2">Caffeine tracker</h1>
     <nav class="level" v-if="lastKnownAmount != null">
       <div class="level-item has-text-centered">
         <div>
@@ -8,26 +9,26 @@
           <p class="title">{{Math.round(amountAtUnixtime(Date.now()))}} mg</p>
         </div>
       </div>
-      <div v-if="(new Date()).getHours() < 20" class="level-item has-text-centered">
+      <div class="level-item has-text-centered">
         <div>
           <p class="heading">In three hours</p>
           <p class="title">{{ Math.round(amountAtUnixtime(Date.now() + 3*3600000) )}} mg</p>
         </div>
       </div>
-      <div v-if="(new Date()).getHours() < 21.5" class="level-item has-text-centered">
+      <div v-if="(new Date()).getHours() < 20.5" class="level-item has-text-centered">
         <div>
           <p class="heading">At 23:00</p>
-          <p class="title">{{ amountAtHoursOfDay(23) }} mg</p>
+          <p class="title" v-bind:class="{ insignificant: (amountAtHoursOfDay(23) < 20)}">{{ amountAtHoursOfDay(23) }} mg</p>
         </div>
       </div>
-      <div v-if="(new Date()).getHours() > 21.5" class="level-item has-text-centered">
+      <div v-if="(new Date()).getHours() > 19" class="level-item has-text-centered">
         <div>
           <p class="heading">At 7:00</p>
           <p class="title">{{ amountAtHoursOfDay(7) }} mg</p>
         </div>
       </div>
     </nav>
-    <button class="button is-medium is-primary" @click="inputModalActive = true">Record a drink</button>
+    <button class="button is-fullwidth is-medium is-primary" @click="inputModalActive = true">Record a drink</button>
     <b-modal :active.sync="inputModalActive">
       <div class="card">
         <div class="card-content">
@@ -53,7 +54,21 @@
         </div>
       </div>
     </b-modal>
+    <br>
+      <article v-if="currentAmount > 400" class="is-danger message">
+          <div class="message-header">
+            <p>You overdid it.</p>
+          </div>
+          <div class="message-body">
+            Doses higher than 400 mg cause overdose symptoms like nausea, vomiting, jitters, restlessness and nervousness. Your sleep will be severely impaired.
+          </div>
+      </article>
+    <hr>
+    <p>
+      <a href="https://github.com/tensojka/caffeine-tracker">source code</a>
+    </p>
   </div>
+</section>
 </template>
 
 <script>
@@ -134,6 +149,11 @@ export default {
       this.inputModalActive = false
     }
   },
+  computed: {
+    currentAmount: function(){
+      return this.amountAtUnixtime(new Date().valueOf())
+    }
+  },
   mounted(){
     this.computeLastKnown()
   }
@@ -147,5 +167,8 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   margin-top: 60px;
+}
+.insignificant {
+  color: hsl(0, 0%, 71%);
 }
 </style>
