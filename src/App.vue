@@ -21,7 +21,7 @@
           <p class="title" v-bind:class="{ insignificant: (amountAtHoursOfDay(23) < 20)}">{{ amountAtHoursOfDay(23) }} mg</p>
         </div>
       </div>
-      <div v-if="(new Date()).getHours() > 19" class="level-item has-text-centered">
+      <div v-if="((new Date()).getHours() > 19) && amountAtHoursOfDay(7) > 5" class="level-item has-text-centered">
         <div>
           <p class="heading">At 7:00</p>
           <p class="title">{{ amountAtHoursOfDay(7) }} mg</p>
@@ -127,7 +127,7 @@ export default {
         var ingestions = JSON.parse(window.localStorage.getItem("ingestions"))
         for (var i = 0; i < ingestions.length; i++) {
           if(this.lastKnownAmountTime != null){
-            this.lastKnownAmount = this.amountAtUnixtime(new Date(this.lastKnownAmountTime).valueOf()) + ingestions[i].v
+            this.lastKnownAmount = this.amountAtUnixtime(new Date(ingestions[i].t).valueOf()) + ingestions[i].v
           }else{
             this.lastKnownAmount = ingestions[i].v
           }
